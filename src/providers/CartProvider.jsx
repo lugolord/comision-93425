@@ -7,16 +7,17 @@ function CartProvider ({ children }) {
   const isInCart = product => cart.some(item => item.id === product.id)
 
   const addProduct = product => {
-    if (isInCart(product)) {
-      const newCart = cart.map(item => {
-        if (item.id === product.id) return {...item, count: item.count + product.count}
-        return item
-      })
-
-      setCart(newCart)
-    } else {
+    if (!isInCart(product)) {
       setCart([...cart, product])
+      return
     }
+
+    const newCart = cart.map(item => {
+      if (item.id === product.id) return {...item, count: item.count + product.count}
+      return item
+    })
+
+    setCart(newCart)
   }
 
   const getProductsQuantity = () => {
