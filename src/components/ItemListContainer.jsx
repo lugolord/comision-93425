@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
+import { getProducts, filterProducts } from '../firebase/db'
 import ItemList from './ItemList'
 
 function ItemListContainer () {
@@ -7,12 +8,11 @@ function ItemListContainer () {
   const { category } = useParams()
 
   useEffect(() => {
-    const url = 'https://dummyjson.com/products'
-    const urlCategories = `https://dummyjson.com/products/category/${category}`
-    
-    fetch(category ? urlCategories : url)
-      .then(res => res.json())
-      .then(data => setItems(data.products))
+    if (category) {
+      filterProducts(category).then(prods => setItems(prods))
+    } else {
+      getProducts().then(prods => setItems(prods))
+    }
   }, [category])
   
   return (

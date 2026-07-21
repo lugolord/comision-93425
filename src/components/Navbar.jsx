@@ -1,15 +1,14 @@
 import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router'
 import { CartContext } from '../context/CartContext'
+import { getCategories } from '../firebase/db'
 
 function Navbar () {
   const [categories, setCategories] = useState([])
   const { getProductsQuantity } = useContext(CartContext)
 
   useEffect(() => {
-    fetch('https://dummyjson.com/products/category-list')
-      .then(res => res.json())
-      .then(setCategories)
+      getCategories().then(cats => setCategories(cats))
   }, [])
   
   return (
